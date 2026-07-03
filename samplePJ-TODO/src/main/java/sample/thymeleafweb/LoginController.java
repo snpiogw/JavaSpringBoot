@@ -30,19 +30,4 @@ public class LoginController {
     @GetMapping("/login")
     public String showLoginForm() { return "login"; }
 
-    @PostMapping("/login")
-    public String login(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
-        Login user = loginService.login(username, password);
-        if (user != null) {
-            session.setAttribute("username", user.getUsername());
-            return "redirect:/tasks";
-        }
-        return "redirect:/login?error";
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/login";
-    }
 }
