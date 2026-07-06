@@ -32,21 +32,12 @@ public class LoginServiceImpl implements LoginService {
     @Override
     @Transactional(readOnly = true)
     public Login login(String username, String rawPassword) {
-        // 1. ユーザー名で検索
         Login user = loginMapper.findByUsername(username);
-        
-        // --- ここにデバッグログを追加 ---
-        System.out.println("DEBUG: 検索結果(user)はnullか？ -> " + (user == null));
-        if (user != null) {
-            System.out.println("DEBUG: データベース上のパスワード(ハッシュ値) -> " + user.getPassword());
-            boolean isMatch = passwordEncoder.matches(rawPassword, user.getPassword());
-            System.out.println("DEBUG: パスワード照合結果 -> " + isMatch);
-        }
-        // ------------------------------
 
         if (user != null && passwordEncoder.matches(rawPassword, user.getPassword())) {
             return user;
         }
+
         return null;
     }
 }
