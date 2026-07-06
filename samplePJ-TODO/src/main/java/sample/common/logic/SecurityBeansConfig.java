@@ -28,8 +28,12 @@ public class SecurityBeansConfig {
                 .failureUrl("/login?error")
                 .permitAll())
             .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout"));
+            	    .logoutUrl("/logout")
+            	    .logoutSuccessUrl("/login?logout")
+            	    .invalidateHttpSession(true)
+            	    .deleteCookies("JSESSIONID")
+            	    .permitAll()
+            	);
         // CSRFはデフォルトで有効（明示的に無効化しないこと）
         return http.build();
     }

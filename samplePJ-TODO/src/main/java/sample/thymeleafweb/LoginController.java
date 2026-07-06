@@ -26,8 +26,8 @@ public class LoginController {
     public String showRegisterForm() { return "register"; }
 
     @PostMapping("/register")
-    public String registerUser(@RequestParam String username,
-                               @RequestParam String password,
+    public String registerUser(@RequestParam("username") String username,
+                               @RequestParam("password") String password,
                                Model model) {
 
         if (!username.matches("^[a-zA-Z]+$") || !password.matches("^[a-zA-Z0-9]+$")) {
