@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -26,6 +27,13 @@ public class GlobalExceptionHandler {
     public String handleOther(Exception e, Model model) {
         log.error("予期しないエラーが発生しました", e);
         model.addAttribute("message", "予期しないエラーが発生しました。");
+        return "error";
+    }
+    
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleNoResource(NoResourceFoundException e, Model model) {
+        model.addAttribute("message", "ページまたはリソースが見つかりません。");
         return "error";
     }
 }
