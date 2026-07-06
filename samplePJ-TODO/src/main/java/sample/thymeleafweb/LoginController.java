@@ -29,13 +29,22 @@ public class LoginController {
     public String registerUser(@RequestParam String username,
                                @RequestParam String password,
                                Model model) {
+
         if (!username.matches("^[a-zA-Z]+$") || !password.matches("^[a-zA-Z0-9]+$")) {
             model.addAttribute("errorMessage",
-                "ユーザ名は半角英字、パスワードは半角英数字で入力してください。");
-            model.addAttribute("username", username); // 入力保持
+                    "ユーザ名は半角英字、パスワードは半角英数字で入力してください。");
+            model.addAttribute("username", username);
             return "register";
         }
-        loginService.registerUser(username, password);
+
+        try {
+            loginService.registerUser(username, password);
+        } catch (IllegalStateException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("username", username);
+            return "register";
+        }
+
         return "redirect:/login";
     }
 }
