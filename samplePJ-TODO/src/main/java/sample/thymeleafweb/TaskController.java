@@ -28,19 +28,29 @@ public class TaskController {
         return userDetails.getUsername();
     }
     
+    private static final int PAGE_SIZE = 10;
+    
     @GetMapping
     public String listTasks(@RequestParam(value = "page", defaultValue = "1") int page,
                             @AuthenticationPrincipal UserDetails userDetails,
                             Model model) {
-        
+
         String username = userDetails.getUsername();
-        
-        int limit = 10;
-        int offset = (page - 1) * limit;
-        
-        List<Task> tasks = taskService.getTasksByUsername(username, offset);
-        
+
+        int totalCount = taskService.countByUsername(username);
+        int totalPages = Math.max((int) Math.ceil((double) totalCount / PAGE_SIZE), 1);
+
+        int safePage = Math.max(page, 1);
+        safePage = Math.min(safePage, totalPages);
+
+        int offset = (safePage - 1) * PAGE_SIZE;
+
+        List<Task> tasks = taskService.getTasksByUsername(username, offset, PAGE_SIZE);
+
         model.addAttribute("tasks", tasks);
+        model.addAttribute("currentPage", safePage);
+        model.addAttribute("totalPages", totalPages);
+
         return "tasks/list";
     }
 

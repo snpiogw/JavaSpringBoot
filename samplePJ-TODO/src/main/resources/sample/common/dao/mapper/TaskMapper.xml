@@ -8,7 +8,7 @@
     FROM tasks 
     WHERE username = #{username} 
     ORDER BY id DESC
-    LIMIT 10 OFFSET #{offset}
+    LIMIT #{limit} OFFSET #{offset}
 </select>
     
     <select id="findByIdAndUsername" resultType="sample.common.dao.entity.Task">

@@ -22,8 +22,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Task> getTasksByUsername(String username, int offset) {
-        return taskMapper.findByUsername(username, offset);
+    public List<Task> getTasksByUsername(String username, int offset, int limit) {
+        return taskMapper.findByUsername(username, offset, limit);
     }
 
     @Override
