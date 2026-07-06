@@ -16,30 +16,35 @@
         <form th:action="@{/tasks/update/{id}(id=${task.id})}" th:object="${task}" method="post">
             <input type="hidden" th:field="*{id}">
             
-            <div class="mb-3">
-                <label for="title" class="form-label">タイトル</label>
-                <input type="text" class="form-control" id="title" th:field="*{title}" required>
-            </div>
+			<div class="mb-3">
+			    <label for="title" class="form-label">タイトル</label>
+			    <input type="text" class="form-control" id="title" th:field="*{title}">
+			    <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+			</div>
             
-            <div class="mb-3">
-                <label for="content" class="form-label">内容</label>
-                <textarea class="form-control" id="content" th:field="*{content}" required></textarea>
-            </div>
+			<div class="mb-3">
+			    <label for="content" class="form-label">内容</label>
+			    <textarea class="form-control" id="content" th:field="*{content}"></textarea>
+			    <div class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
+			</div>
             
-            <div class="mb-3">
-                <label for="name" class="form-label">登録者</label>
-                <input type="text" class="form-control" id="name" th:field="*{name}" required>
-            </div>
+			<div class="mb-3">
+			    <label for="name" class="form-label">登録者</label>
+			    <input type="text" class="form-control" id="name" th:field="*{name}">
+			    <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+			</div>
             
-            <div class="mb-3">
-                <label for="startDate" class="form-label">開始日</label>
-                <input type="date" class="form-control" id="startDate" th:field="*{startDate}" required>
-            </div>
+			<div class="mb-3">
+			    <label for="startDate" class="form-label">開始日</label>
+			    <input type="date" class="form-control" id="startDate" th:field="*{startDate}">
+			    <div class="text-danger" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
+			</div>
 			
-            <div class="mb-3">
-                    <label for="endDate" class="form-label">終了日</label>
-                    <input type="date" class="form-control" id="endDate" th:field="*{endDate}" required>
-            </div>
+			<div class="mb-3">
+			    <label for="endDate" class="form-label">終了日</label>
+			    <input type="date" class="form-control" id="endDate" th:field="*{endDate}">
+			    <div class="text-danger" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
+			</div>
 
             <div class="mt-4">
                 <button type="submit" class="btn btn-primary px-4">更新</button>

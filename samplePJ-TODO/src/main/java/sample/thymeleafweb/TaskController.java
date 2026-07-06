@@ -1,25 +1,29 @@
 package sample.thymeleafweb;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
 import sample.common.dao.entity.Task;
 import sample.common.service.TaskService;
-
-import java.security.Principal;
-import java.util.List;
+import sample.thymeleafweb.form.TaskForm;
 
 @Controller
 @RequestMapping("/tasks")
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
+    private final TaskService taskService;
 
-    // ログインユーザー名を取得する最もスマートな方法
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
     private String getUsername(UserDetails userDetails) {
         return userDetails.getUsername();
     }
@@ -31,13 +35,9 @@ public class TaskController {
         
         String username = userDetails.getUsername();
         
-        // 1ページあたりの表示件数を指定 (例: 5件)
-        int limit = 10; 
-        
-        // ページ番号からoffsetを計算 (例: 1ページ目なら0, 2ページ目なら5)
+        int limit = 10;
         int offset = (page - 1) * limit;
         
-        // 引数を2つ（usernameとoffset）渡す
         List<Task> tasks = taskService.getTasksByUsername(username, offset);
         
         model.addAttribute("tasks", tasks);
@@ -46,8 +46,23 @@ public class TaskController {
 
     @GetMapping("/new")
     public String showNewForm(Model model) {
-        model.addAttribute("task", new Task());
+        model.addAttribute("task", new TaskForm());
         return "tasks/form-new";
+    }
+    
+    @PostMapping
+    public String createTask(@Valid @ModelAttribute("task") TaskForm form,
+                             BindingResult result,
+                             @AuthenticationPrincipal UserDetails userDetails) {
+
+        if (result.hasErrors()) {
+            return "tasks/form-new";
+        }
+
+        Task task = toEntity(form, getUsername(userDetails));
+        taskService.createTask(task);
+
+        return "redirect:/tasks";
     }
     
     @GetMapping("/edit/{id}")
@@ -59,34 +74,68 @@ public class TaskController {
 
         Task task = taskService.getTaskById(id, username);
 
-        model.addAttribute("task", task);
+        model.addAttribute("task", toForm(task));
 
         return "tasks/form-edit";
-    }    
-
-    @PostMapping
-    public String createTask(@ModelAttribute Task task, @AuthenticationPrincipal UserDetails userDetails) {
-        task.setUsername(getUsername(userDetails));
-        taskService.createTask(task);
-        return "redirect:/tasks";
-    }
-    
-    @PostMapping("/delete/{id}")
-    public String deleteTask(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
-        taskService.deleteTask(id, getUsername(userDetails));
-        return "redirect:/tasks";
     }
     
     @PostMapping("/update/{id}")
     public String updateTask(@PathVariable("id") Long id,
-                             @ModelAttribute Task task,
+                             @Valid @ModelAttribute("task") TaskForm form,
+                             BindingResult result,
                              @AuthenticationPrincipal UserDetails userDetails) {
 
+        if (result.hasErrors()) {
+            form.setId(id);
+            return "tasks/form-edit";
+        }
+
+        Task task = toEntity(form, getUsername(userDetails));
         task.setId(id);
-        task.setUsername(getUsername(userDetails));
 
         taskService.updateTask(task);
 
         return "redirect:/tasks";
+    }
+    
+    @PostMapping("/delete/{id}")
+    public String deleteTask(@PathVariable("id") Long id,
+                             @AuthenticationPrincipal UserDetails userDetails) {
+
+        taskService.deleteTask(id, getUsername(userDetails));
+        return "redirect:/tasks";
+    }
+
+    private Task toEntity(TaskForm form, String username) {
+        Task task = new Task();
+
+        task.setId(form.getId());
+        task.setUsername(username);
+        task.setTitle(form.getTitle());
+        task.setContent(form.getContent());
+        task.setName(form.getName());
+        task.setStartDate(java.sql.Date.valueOf(form.getStartDate()));
+        task.setEndDate(java.sql.Date.valueOf(form.getEndDate()));
+
+        return task;
+    }
+
+    private TaskForm toForm(Task task) {
+        TaskForm form = new TaskForm();
+
+        form.setId(task.getId());
+        form.setTitle(task.getTitle());
+        form.setContent(task.getContent());
+        form.setName(task.getName());
+
+        if (task.getStartDate() != null) {
+            form.setStartDate(task.getStartDate().toLocalDate());
+        }
+
+        if (task.getEndDate() != null) {
+            form.setEndDate(task.getEndDate().toLocalDate());
+        }
+
+        return form;
     }
 }
