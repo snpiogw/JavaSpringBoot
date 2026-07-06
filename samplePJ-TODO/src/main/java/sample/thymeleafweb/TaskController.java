@@ -124,8 +124,8 @@ public class TaskController {
         task.setTitle(form.getTitle());
         task.setContent(form.getContent());
         task.setName(form.getName());
-        task.setStartDate(java.sql.Date.valueOf(form.getStartDate()));
-        task.setEndDate(java.sql.Date.valueOf(form.getEndDate()));
+        task.setStartDate(form.getStartDate());
+        task.setEndDate(form.getEndDate());
 
         return task;
     }
@@ -137,14 +137,8 @@ public class TaskController {
         form.setTitle(task.getTitle());
         form.setContent(task.getContent());
         form.setName(task.getName());
-
-        if (task.getStartDate() != null) {
-            form.setStartDate(task.getStartDate().toLocalDate());
-        }
-
-        if (task.getEndDate() != null) {
-            form.setEndDate(task.getEndDate().toLocalDate());
-        }
+        form.setStartDate(task.getStartDate());
+        form.setEndDate(task.getEndDate());
 
         return form;
     }

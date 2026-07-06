@@ -39,11 +39,11 @@
                             <td class="text-start" th:text="${task.title}"></td>
                             <td th:text="${task.name}"></td>
 							<td class="text-start text-truncate task-content-cell" th:text="${task.content}"></td>
-                            <td th:text="${task.startDate != null ? #dates.format(task.startDate, 'yyyy-MM-dd') : ''}"></td>
-                            <td th:text="${task.endDate != null ? #dates.format(task.endDate, 'yyyy-MM-dd') : ''}"></td>
-                            <td th:text="${task.createdAt != null ? #dates.format(task.createdAt, 'yyyy-MM-dd HH:mm:ss') : ''}"></td>
-                            <td th:text="${task.updatedAt != null ? #dates.format(task.updatedAt, 'yyyy-MM-dd HH:mm:ss') : ''}"></td>
-                            
+							<td th:text="${task.startDate != null ? #temporals.format(task.startDate, 'yyyy-MM-dd') : ''}"></td>
+							<td th:text="${task.endDate != null ? #temporals.format(task.endDate, 'yyyy-MM-dd') : ''}"></td>
+							<td th:text="${task.createdAt != null ? #temporals.format(task.createdAt, 'yyyy-MM-dd HH:mm:ss') : ''}"></td>
+							<td th:text="${task.updatedAt != null ? #temporals.format(task.updatedAt, 'yyyy-MM-dd HH:mm:ss') : ''}"></td>
+							
                             <td>
                                 <div class="d-flex gap-1 justify-content-center">
                                     <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-primary btn-sm">編集</a>
