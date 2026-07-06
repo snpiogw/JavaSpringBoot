@@ -1,4 +1,5 @@
 package sample.common.service.impl;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -10,16 +11,19 @@ import sample.common.exception.TaskNotFoundException;
 import sample.common.service.TaskService;
 
 @Service
-@Transactional  // 既定で書き込みトランザクション
+@Transactional
 public class TaskServiceImpl implements TaskService {
 
     private final TaskMapper taskMapper;
-    public TaskServiceImpl(TaskMapper taskMapper) { this.taskMapper = taskMapper; }
+
+    public TaskServiceImpl(TaskMapper taskMapper) {
+        this.taskMapper = taskMapper;
+    }
 
     @Override
     @Transactional(readOnly = true)
     public List<Task> getTasksByUsername(String username, int offset) {
-    	return taskMapper.findByUsername(username, offset);
+        return taskMapper.findByUsername(username, offset);
     }
 
     @Override
@@ -41,9 +45,25 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void createTask(Task task) { taskMapper.insertTask(task); }
+    public void createTask(Task task) {
+        taskMapper.insertTask(task);
+    }
+
     @Override
-    public void updateTask(Task task) { taskMapper.updateTask(task); }
+    public void updateTask(Task task) {
+        int count = taskMapper.updateTask(task);
+
+        if (count == 0) {
+            throw new TaskNotFoundException(task.getId());
+        }
+    }
+
     @Override
-    public void deleteTask(Long id, String username) { taskMapper.deleteTask(id, username); }
+    public void deleteTask(Long id, String username) {
+        int count = taskMapper.deleteTask(id, username);
+
+        if (count == 0) {
+            throw new TaskNotFoundException(id);
+        }
+    }
 }

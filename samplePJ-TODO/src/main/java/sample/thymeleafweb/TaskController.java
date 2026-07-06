@@ -49,6 +49,20 @@ public class TaskController {
         model.addAttribute("task", new Task());
         return "tasks/form-new";
     }
+    
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable("id") Long id,
+                               @AuthenticationPrincipal UserDetails userDetails,
+                               Model model) {
+
+        String username = getUsername(userDetails);
+
+        Task task = taskService.getTaskById(id, username);
+
+        model.addAttribute("task", task);
+
+        return "tasks/form-edit";
+    }    
 
     @PostMapping
     public String createTask(@ModelAttribute Task task, @AuthenticationPrincipal UserDetails userDetails) {
@@ -56,13 +70,23 @@ public class TaskController {
         taskService.createTask(task);
         return "redirect:/tasks";
     }
-
-    // 他のメソッドも同様に、HttpSessionのチェックを削除できます
-    // @PathVariable や @ModelAttribute をそのまま使ってください
     
     @PostMapping("/delete/{id}")
     public String deleteTask(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
         taskService.deleteTask(id, getUsername(userDetails));
+        return "redirect:/tasks";
+    }
+    
+    @PostMapping("/update/{id}")
+    public String updateTask(@PathVariable("id") Long id,
+                             @ModelAttribute Task task,
+                             @AuthenticationPrincipal UserDetails userDetails) {
+
+        task.setId(id);
+        task.setUsername(getUsername(userDetails));
+
+        taskService.updateTask(task);
+
         return "redirect:/tasks";
     }
 }

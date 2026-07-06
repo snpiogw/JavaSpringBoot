@@ -16,6 +16,6 @@ public interface TaskMapper {
     Task findByIdAndUsername(@Param("id") Long id, @Param("username") String username);
     
     void insertTask(Task task);
-    void updateTask(Task task);
-    void deleteTask(@Param("id") Long id, @Param("username") String username);
+    int updateTask(Task task);
+    int deleteTask(@Param("id") Long id, @Param("username") String username);
 }
