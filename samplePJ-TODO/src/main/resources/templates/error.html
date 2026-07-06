@@ -11,8 +11,13 @@
 </head>
 <body>
     <div class="error-card">
-        <h3 class="text-danger mb-4">入力内容に誤りがあります</h3>
-        <p>ユーザ名は半角英字のみ、パスワードは半角英数字のみで入力してください。</p>
+		<h3 class="text-danger mb-4">
+		エラーが発生しました
+		</h3>
+
+		<p th:text="${message}">
+		エラーメッセージ
+		</p>
         <a href="javascript:history.back()" class="btn btn-secondary mt-3">戻る</a>
     </div>
 </body>

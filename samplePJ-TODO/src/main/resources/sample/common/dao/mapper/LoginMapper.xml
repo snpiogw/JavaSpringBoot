@@ -4,7 +4,7 @@
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO login (username, password) VALUES (#{username}, #{password})
     </insert>
-   <select id="findByUsername" resultType="sample.common.dao.entity.Login">
+    <select id="findByUsername" resultType="sample.common.dao.entity.Login">
     SELECT id, username, password, created_at AS createdAt, updated_at AS updatedAt
     FROM login WHERE username = #{username}
 </select>
