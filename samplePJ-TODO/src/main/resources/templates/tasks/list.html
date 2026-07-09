@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -37,8 +37,8 @@
                         <tr th:each="task : ${tasks}" class="text-center">
                             <td th:text="${task.id}"></td>
                             <td class="text-start" th:text="${task.title}"></td>
-                            <td th:text="${task.name}"></td>
 							<td class="text-start text-truncate task-content-cell" th:text="${task.content}"></td>
+                            <td th:text="${task.registrantName}"></td>
 							<td th:text="${task.startDate != null ? #temporals.format(task.startDate, 'yyyy-MM-dd') : ''}"></td>
 							<td th:text="${task.endDate != null ? #temporals.format(task.endDate, 'yyyy-MM-dd') : ''}"></td>
 							<td th:text="${task.createdAt != null ? #temporals.format(task.createdAt, 'yyyy-MM-dd HH:mm:ss') : ''}"></td>

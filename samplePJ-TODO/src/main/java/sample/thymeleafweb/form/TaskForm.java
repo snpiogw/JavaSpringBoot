@@ -21,7 +21,7 @@ public class TaskForm {
     private String content;
 
     @NotBlank(message = "登録者は必須です")
-    private String name;
+    private String registrantName;
 
     @NotNull(message = "開始日は必須です")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -55,12 +55,12 @@ public class TaskForm {
         this.content = content;
     }
     
-    public String getName() {
-        return name;
+    public String getRegistrantName() {
+        return registrantName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRegistrantName(String registrantName) {
+        this.registrantName = registrantName;
     }
 
 	public LocalDate getStartDate() {

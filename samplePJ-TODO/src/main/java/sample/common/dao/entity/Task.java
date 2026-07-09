@@ -9,7 +9,7 @@ public class Task {
     private String username;
     private String title;
     private String content;
-    private String name;
+    private String registrantName;
 
     private LocalDate startDate;
     private LocalDate endDate;
@@ -49,12 +49,12 @@ public class Task {
         this.content = content;
     }
     
-    public String getName() {
-        return name;
+    public String getRegistrantName() {
+        return registrantName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRegistrantName(String registrantName) {
+        this.registrantName = registrantName;
     }
 
     public LocalDate getStartDate() {

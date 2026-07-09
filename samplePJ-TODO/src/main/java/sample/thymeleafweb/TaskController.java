@@ -123,7 +123,7 @@ public class TaskController {
         task.setUsername(username);
         task.setTitle(form.getTitle());
         task.setContent(form.getContent());
-        task.setName(form.getName());
+        task.setRegistrantName(form.getRegistrantName());
         task.setStartDate(form.getStartDate());
         task.setEndDate(form.getEndDate());
 
@@ -136,7 +136,7 @@ public class TaskController {
         form.setId(task.getId());
         form.setTitle(task.getTitle());
         form.setContent(task.getContent());
-        form.setName(task.getName());
+        form.setRegistrantName(task.getRegistrantName());
         form.setStartDate(task.getStartDate());
         form.setEndDate(task.getEndDate());
 

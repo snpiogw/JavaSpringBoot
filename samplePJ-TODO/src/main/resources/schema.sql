@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     username    VARCHAR(50)  NOT NULL REFERENCES login(username),
     title       VARCHAR(255) NOT NULL,
     content     TEXT,
-    name        VARCHAR(100),
+    registrant_name VARCHAR(100),
     start_date  DATE,
     end_date    DATE,
     created_at  TIMESTAMPTZ  NOT NULL DEFAULT now(),
